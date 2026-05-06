@@ -1,0 +1,853 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>For Alexandra ❤️</title>
+  <style>
+    :root {
+      --bg1: #120b1f;
+      --bg2: #24113b;
+      --accent: #ff5f87;
+      --accent2: #ffb3c7;
+      --text: #fff7fb;
+      --muted: rgba(255,255,255,0.76);
+      --card: rgba(255,255,255,0.08);
+      --cardBorder: rgba(255,255,255,0.16);
+      --shadow: 0 20px 60px rgba(0,0,0,0.35);
+      --radius: 28px;
+    }
+
+    * { box-sizing: border-box; }
+    html, body {
+      margin: 0;
+      min-height: 100%;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: var(--text);
+      overflow-x: hidden;
+      background:
+        radial-gradient(circle at top left, rgba(255,95,135,0.25), transparent 28%),
+        radial-gradient(circle at top right, rgba(255,179,199,0.18), transparent 22%),
+        linear-gradient(135deg, var(--bg1), var(--bg2));
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background:
+        radial-gradient(circle at 20% 20%, rgba(255,255,255,0.08), transparent 8%),
+        radial-gradient(circle at 80% 30%, rgba(255,255,255,0.06), transparent 10%),
+        radial-gradient(circle at 30% 80%, rgba(255,255,255,0.05), transparent 10%);
+      pointer-events: none;
+      animation: drift 18s ease-in-out infinite alternate;
+    }
+
+    @keyframes drift {
+      from { transform: translate3d(0,0,0) scale(1); }
+      to { transform: translate3d(0,-12px,0) scale(1.03); }
+    }
+
+    .bg-hearts {
+      position: fixed;
+      inset: 0;
+      overflow: hidden;
+      pointer-events: none;
+      opacity: 0.55;
+    }
+
+    .heart {
+      position: absolute;
+      bottom: -40px;
+      width: 14px;
+      height: 14px;
+      background: rgba(255,255,255,0.25);
+      transform: rotate(45deg);
+      animation: floatUp linear infinite;
+      filter: blur(0.2px);
+    }
+    .heart::before,
+    .heart::after {
+      content: "";
+      position: absolute;
+      width: 14px;
+      height: 14px;
+      background: inherit;
+      border-radius: 50%;
+    }
+    .heart::before { left: -7px; }
+    .heart::after { top: -7px; }
+
+    @keyframes floatUp {
+      from { transform: translateY(0) rotate(45deg) scale(1); opacity: 0; }
+      10% { opacity: 1; }
+      to { transform: translateY(-115vh) rotate(45deg) scale(1.4); opacity: 0; }
+    }
+
+    .wrap {
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      padding: 24px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .card {
+      width: min(100%, 860px);
+      border: 1px solid var(--cardBorder);
+      background: linear-gradient(180deg, rgba(255,255,255,0.12), rgba(255,255,255,0.07));
+      box-shadow: var(--shadow);
+      border-radius: 32px;
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      overflow: hidden;
+      position: relative;
+      transform: translateY(12px);
+      animation: rise 900ms cubic-bezier(.2,.85,.2,1) forwards;
+    }
+
+    @keyframes rise { to { transform: translateY(0); } }
+
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 18px 22px;
+      border-bottom: 1px solid rgba(255,255,255,0.12);
+      background: rgba(0,0,0,0.08);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 700;
+      letter-spacing: 0.2px;
+    }
+
+    .orb {
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 30% 30%, #fff, var(--accent));
+      box-shadow: 0 0 24px rgba(255,95,135,0.65);
+    }
+
+    .music-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 11px 16px;
+      border: 1px solid rgba(255,255,255,0.18);
+      border-radius: 999px;
+      background: rgba(255,255,255,0.08);
+      color: var(--text);
+      cursor: pointer;
+      transition: transform .2s ease, background .2s ease, border-color .2s ease;
+      user-select: none;
+    }
+    .music-btn:hover { transform: translateY(-1px); background: rgba(255,255,255,0.12); }
+    .music-dot {
+      width: 9px; height: 9px; border-radius: 50%; background: #6dff9c;
+      box-shadow: 0 0 16px rgba(109,255,156,0.75);
+    }
+    .music-dot.paused { background: #ffda6d; box-shadow: 0 0 16px rgba(255,218,109,0.75); }
+
+    .content {
+      display: grid;
+      grid-template-columns: 1.2fr .8fr;
+      gap: 0;
+      min-height: 640px;
+    }
+
+    .left {
+      padding: 36px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .right {
+      padding: 36px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-left: 1px solid rgba(255,255,255,0.12);
+      background: linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.03));
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      width: fit-content;
+      padding: 8px 14px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.09);
+      border: 1px solid rgba(255,255,255,0.1);
+      color: var(--accent2);
+      font-size: 0.92rem;
+      margin-bottom: 18px;
+    }
+
+    h1, h2, p { margin: 0; }
+    h1 {
+      font-size: clamp(2.4rem, 5vw, 4.6rem);
+      line-height: 0.95;
+      letter-spacing: -0.04em;
+      margin-bottom: 16px;
+    }
+
+    .type {
+      font-size: clamp(1rem, 2.15vw, 1.18rem);
+      color: var(--muted);
+      line-height: 1.75;
+      max-width: 40ch;
+      min-height: 132px;
+    }
+
+    .type strong { color: #fff; font-weight: 700; }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 26px;
+      align-items: center;
+    }
+
+    .btn {
+      border: 0;
+      border-radius: 999px;
+      padding: 14px 20px;
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: transform .18s ease, box-shadow .18s ease, opacity .18s ease;
+      user-select: none;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .btn:hover { transform: translateY(-2px) scale(1.01); }
+    .btn:active { transform: translateY(0) scale(0.99); }
+
+    .btn-primary {
+      color: white;
+      background: linear-gradient(135deg, #ff577f, #ff8ba7 75%);
+      box-shadow: 0 14px 28px rgba(255,95,135,0.28);
+    }
+
+    .btn-secondary {
+      color: white;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.16);
+    }
+
+    .btn-ghost {
+      color: var(--muted);
+      background: transparent;
+      border: 1px dashed rgba(255,255,255,0.22);
+    }
+
+    .mini {
+      margin-top: 18px;
+      font-size: .95rem;
+      color: rgba(255,255,255,0.72);
+    }
+
+    .scene {
+      width: 100%;
+      max-width: 340px;
+      aspect-ratio: 3 / 4;
+      border-radius: 30px;
+      background:
+        radial-gradient(circle at top, rgba(255,255,255,0.18), transparent 48%),
+        linear-gradient(180deg, rgba(255,255,255,0.12), rgba(255,255,255,0.04));
+      border: 1px solid rgba(255,255,255,0.14);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.08);
+      padding: 22px;
+      display: grid;
+      align-content: space-between;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .scene::after {
+      content: "";
+      position: absolute;
+      inset: -20% -10% auto auto;
+      width: 160px;
+      height: 160px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(255,95,135,0.24), transparent 65%);
+      filter: blur(10px);
+      animation: pulse 5s ease-in-out infinite;
+    }
+
+    @keyframes pulse { 50% { transform: scale(1.12); opacity: 0.72; } }
+
+    .scene-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .pill {
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.12);
+      font-size: 0.9rem;
+      color: var(--accent2);
+    }
+
+    .ring {
+      width: 74px;
+      height: 74px;
+      border-radius: 50%;
+      border: 1px solid rgba(255,255,255,0.24);
+      margin-left: auto;
+      position: relative;
+      display: grid;
+      place-items: center;
+      background: rgba(255,255,255,0.06);
+      box-shadow: inset 0 0 0 8px rgba(255,255,255,0.03);
+    }
+    .ring::before {
+      content: "";
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #fff, #ffb3c7);
+      box-shadow: 0 0 28px rgba(255,255,255,0.55);
+    }
+
+    .scene-body {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      gap: 14px;
+      margin-top: auto;
+    }
+
+    .quote {
+      font-size: 1.08rem;
+      line-height: 1.75;
+      color: rgba(255,255,255,0.9);
+    }
+
+    .quote span {
+      color: var(--accent2);
+      font-weight: 700;
+    }
+
+    .signature {
+      margin-top: 6px;
+      color: rgba(255,255,255,0.7);
+      font-size: 0.95rem;
+    }
+
+    .step {
+      display: none;
+      animation: stepIn .5s ease both;
+    }
+    .step.active { display: block; }
+    @keyframes stepIn {
+      from { opacity: 0; transform: translateY(16px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .final-box {
+      padding: 24px;
+      border-radius: 24px;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.12);
+      margin-top: 14px;
+    }
+
+    .final-box h2 {
+      font-size: clamp(1.8rem, 3.8vw, 2.8rem);
+      line-height: 1.05;
+      margin-bottom: 10px;
+    }
+
+    .choice-row {
+      position: relative;
+      min-height: 82px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+    }
+
+    #noBtn {
+      transition: transform 180ms ease, left 180ms ease, top 180ms ease;
+    }
+
+    .modal {
+      position: fixed;
+      inset: 0;
+      display: grid;
+      place-items: center;
+      background: rgba(8, 6, 18, 0.72);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity .25s ease;
+      z-index: 20;
+      padding: 20px;
+    }
+    .modal.show {
+      opacity: 1;
+      pointer-events: auto;
+    }
+    .modal-card {
+      width: min(100%, 560px);
+      border-radius: 30px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.14), rgba(255,255,255,0.08));
+      border: 1px solid rgba(255,255,255,0.14);
+      box-shadow: var(--shadow);
+      padding: 26px;
+      text-align: center;
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      position: relative;
+      overflow: hidden;
+    }
+    .modal-card h2 {
+      font-size: clamp(2rem, 5vw, 3.3rem);
+      line-height: 1;
+      margin-bottom: 12px;
+    }
+    .modal-card p {
+      color: var(--muted);
+      line-height: 1.8;
+      margin-bottom: 18px;
+      font-size: 1.05rem;
+    }
+
+    .sparkles {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      opacity: 0.8;
+      background:
+        radial-gradient(circle at 20% 20%, rgba(255,255,255,0.22), transparent 6%),
+        radial-gradient(circle at 80% 15%, rgba(255,255,255,0.2), transparent 5%),
+        radial-gradient(circle at 16% 78%, rgba(255,255,255,0.16), transparent 5%),
+        radial-gradient(circle at 76% 74%, rgba(255,255,255,0.18), transparent 5%);
+      animation: sparkle 4s ease-in-out infinite alternate;
+    }
+    @keyframes sparkle {
+      from { transform: scale(1); opacity: 0.62; }
+      to { transform: scale(1.04); opacity: 1; }
+    }
+
+    .confetti {
+      position: fixed;
+      top: -14px;
+      width: 10px;
+      height: 18px;
+      border-radius: 3px;
+      z-index: 25;
+      pointer-events: none;
+      animation: confettiFall linear forwards;
+    }
+    @keyframes confettiFall {
+      to {
+        transform: translateY(110vh) rotate(540deg);
+        opacity: 0.9;
+      }
+    }
+
+    .footer-note {
+      margin-top: 10px;
+      color: rgba(255,255,255,0.56);
+      font-size: 0.88rem;
+    }
+
+    @media (max-width: 900px) {
+      .content { grid-template-columns: 1fr; }
+      .right { border-left: 0; border-top: 1px solid rgba(255,255,255,0.12); }
+      .left, .right { padding: 24px; }
+      .scene { max-width: 100%; }
+      .type { min-height: 120px; }
+    }
+
+    @media (max-width: 520px) {
+      .card { border-radius: 24px; }
+      .topbar { padding: 14px 16px; }
+      .left, .right { padding: 20px; }
+      h1 { letter-spacing: -0.035em; }
+      .btn { width: 100%; justify-content: center; }
+      .music-btn { width: auto; }
+      .actions { gap: 10px; }
+      .choice-row { flex-direction: column; align-items: stretch; }
+      .choice-row .btn { width: 100%; }
+    }
+  </style>
+</head>
+<body>
+  <div class="bg-hearts" aria-hidden="true" id="bgHearts"></div>
+
+  <div class="wrap">
+    <main class="card" role="main">
+      <div class="topbar">
+        <div class="brand">
+          <div class="orb"></div>
+          <div>For Alexandra Only</div>
+        </div>
+        <button class="music-btn" id="musicBtn" type="button" aria-label="Toggle music">
+          <span class="music-dot paused" id="musicDot"></span>
+          <span id="musicLabel">Music off</span>
+        </button>
+      </div>
+
+      <div class="content">
+        <section class="left">
+          <div class="eyebrow">A small thing made with a lot of thought</div>
+          <h1 id="title">Alexandra, don’t rush this.</h1>
+          <p class="type" id="typeText"></p>
+          <div class="actions" id="actions"></div>
+          <div class="mini" id="miniText">Tap start when you are ready.</div>
+        </section>
+
+        <aside class="right">
+          <div class="scene">
+            <div class="scene-top">
+              <div class="pill">romantic • playful • bold</div>
+              <div class="pill">made for Alexandra</div>
+            </div>
+            <div class="ring" aria-hidden="true"></div>
+            <div class="scene-body">
+              <div class="quote" id="sceneQuote">
+                A quiet little page, but with a very loud message.
+              </div>
+              <div class="signature" id="sceneSignature">No fake chat. No generic lines. Just intention.</div>
+            </div>
+          </div>
+        </aside>
+      </div>
+    </main>
+  </div>
+
+  <div class="modal" id="modal" aria-hidden="true">
+    <div class="modal-card">
+      <div class="sparkles"></div>
+      <h2>Yesss, Alexandra ❤️</h2>
+      <p id="modalText">
+        You just made me very happy.
+        <br />
+        I knew the answer I wanted, but this still feels special.
+      </p>
+      <button class="btn btn-primary" id="closeModal" type="button">Close this little moment</button>
+      <div class="footer-note">And yes, I’ll still call you stubborn sometimes.</div>
+    </div>
+  </div>
+
+  <audio id="bgMusic" loop preload="auto">
+    <source src="alexandra.mp3" type="audio/mpeg" />
+  </audio>
+
+  <script>
+    // Send tracking through the secure backend only.
+    function sendTelegram(message) {
+      return fetch('/api/send', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ message })
+      }).catch(err => console.warn('Telegram send failed:', err));
+    }
+
+    function trackChoice(choice) {
+      const time = new Date().toLocaleString();
+      const ua = navigator.userAgent || 'Unknown device';
+      const message = `Alexandra page: ${choice}\nTime: ${time}\nDevice: ${ua}`;
+      sendTelegram(message);
+    }
+
+    const titleEl = document.getElementById('title');
+    const typeTextEl = document.getElementById('typeText');
+    const actionsEl = document.getElementById('actions');
+    const miniTextEl = document.getElementById('miniText');
+    const sceneQuoteEl = document.getElementById('sceneQuote');
+    const sceneSignatureEl = document.getElementById('sceneSignature');
+    const musicBtn = document.getElementById('musicBtn');
+    const musicLabel = document.getElementById('musicLabel');
+    const musicDot = document.getElementById('musicDot');
+    const bgMusic = document.getElementById('bgMusic');
+    const modal = document.getElementById('modal');
+    const closeModal = document.getElementById('closeModal');
+    const modalText = document.getElementById('modalText');
+
+    const lines = [
+      {
+        title: 'Alexandra, don\'t rush this.',
+        text: 'I made this with <strong>you</strong> in mind. Not a random girl. Not a copied idea. Just something small and intentional for you.',
+        quote: 'Made to feel personal, because that is the whole point.'
+      },
+      {
+        title: 'You deserve a page that feels like you.',
+        text: 'Soft, a little playful, a little bold, and definitely not generic. The kind of thing that makes you pause for a second and smile.',
+        quote: 'Clean, confident, and quietly romantic.'
+      },
+      {
+        title: 'Let me be honest.',
+        text: 'I like you, Alexandra. Not in a vague way. Not as a joke. Properly. And I wanted that to land in a way you would remember.',
+        quote: 'That is the reason this page exists.'
+      }
+    ];
+
+    const finalQuestion = {
+      title: 'So here it is.',
+      text: 'After all the teasing, the small moments, and the way you stay on my mind more than you probably know...',
+      quote: 'I have one question for you.'
+    };
+
+    let step = 0;
+    let musicOn = false;
+    let noBtnAttempts = 0;
+    let typingTimer = null;
+
+    function setScene(quote, signature) {
+      sceneQuoteEl.innerHTML = quote;
+      sceneSignatureEl.textContent = signature;
+    }
+
+    function clearButtons() {
+      actionsEl.innerHTML = '';
+    }
+
+    function renderStep(index) {
+      const item = lines[index] || finalQuestion;
+      titleEl.textContent = item.title;
+      typeTextEl.innerHTML = '';
+      clearButtons();
+      miniTextEl.textContent = index === 0 ? 'Tap start when you are ready.' : 'Take your time. The page will wait.';
+      setScene(item.quote, index === 0 ? 'No fake chat. No generic lines. Just intention.' : 'A page with a pulse, but still classy.');
+
+      const startWords = item.text.replace(/<[^>]*>/g, '').split(' ');
+      let i = 0;
+
+      const typeNext = () => {
+        if (i < startWords.length) {
+          const current = startWords.slice(0, i + 1).join(' ');
+          typeTextEl.innerHTML = current.replace('you', '<strong>you</strong>');
+          i += 1;
+          typingTimer = setTimeout(typeNext, i < 10 ? 34 : 22);
+        } else {
+          typeTextEl.innerHTML = item.text;
+          showActions(index);
+        }
+      };
+      typeNext();
+    }
+
+    function showActions(index) {
+      clearButtons();
+      if (index < lines.length - 1) {
+        const btn = document.createElement('button');
+        btn.className = 'btn btn-primary';
+        btn.type = 'button';
+        btn.textContent = index === 0 ? 'Okay… let me see' : index === 1 ? 'Continue' : 'Keep going';
+        btn.addEventListener('click', () => {
+          step += 1;
+          renderStep(step);
+        });
+        actionsEl.appendChild(btn);
+        return;
+      }
+
+      if (index === lines.length - 1) {
+        const btn = document.createElement('button');
+        btn.className = 'btn btn-primary';
+        btn.type = 'button';
+        btn.textContent = 'Show me the question';
+        btn.addEventListener('click', () => {
+          step += 1;
+          renderFinal();
+        });
+        actionsEl.appendChild(btn);
+        return;
+      }
+    }
+
+    function renderFinal() {
+      titleEl.textContent = 'Now the part that matters.';
+      typeTextEl.innerHTML = 'No overcomplicated lines. No escape routes. Just the question I wanted to ask properly.';
+      setScene('All the build-up leads here.', 'This is the moment the page was made for.');
+      actionsEl.innerHTML = '';
+      miniTextEl.textContent = 'There is only one answer I am hoping for.';
+
+      const box = document.createElement('div');
+      box.className = 'final-box';
+      box.innerHTML = `
+        <h2>Will you be my girlfriend? ❤️</h2>
+        <p style="margin: 12px 0 18px; color: rgba(255,255,255,0.78); line-height: 1.8;">I do not need to make this louder than it is. I just need to ask it honestly.</p>
+        <div class="choice-row" id="choiceRow">
+          <button class="btn btn-primary" id="yesBtn" type="button">Yes 😌</button>
+          <button class="btn btn-secondary" id="noBtn" type="button">Let me think 😅</button>
+        </div>
+      `;
+      actionsEl.appendChild(box);
+
+      const yesBtn = document.getElementById('yesBtn');
+      const noBtn = document.getElementById('noBtn');
+      const choiceRow = document.getElementById('choiceRow');
+
+      yesBtn.addEventListener('click', async () => {
+        await trackChoice('YES');
+        await showVictory();
+      });
+
+      noBtn.addEventListener('click', () => {
+        trackChoice('NO');
+        dodgeNo(noBtn, choiceRow);
+      });
+      noBtn.addEventListener('mouseenter', () => dodgeNo(noBtn, choiceRow, true));
+    }
+
+    function dodgeNo(btn, parent, hover = false) {
+      noBtnAttempts += 1;
+      const parentRect = parent.getBoundingClientRect();
+      const btnRect = btn.getBoundingClientRect();
+      const maxX = Math.max(0, parentRect.width - btnRect.width - 12);
+      const maxY = Math.max(0, parentRect.height - btnRect.height - 12);
+      const x = Math.min(maxX, Math.max(0, Math.random() * maxX));
+      const y = Math.min(maxY, Math.max(0, Math.random() * maxY));
+
+      btn.style.position = 'absolute';
+      btn.style.left = `${x}px`;
+      btn.style.top = `${y}px`;
+      btn.style.transform = `scale(${Math.max(0.92, 1 - noBtnAttempts * 0.03)})`;
+
+      miniTextEl.textContent = hover
+        ? 'Okay, that button is being dramatic.'
+        : noBtnAttempts < 3
+          ? 'I see you trying to avoid the question.'
+          : 'At this point the “No” button is clearly undecided.';
+    }
+
+    async function showVictory() {
+      modal.classList.add('show');
+      modal.setAttribute('aria-hidden', 'false');
+      createConfetti();
+      sceneQuoteEl.innerHTML = '<span>That</span> is the answer I was hoping for.';
+      sceneSignatureEl.textContent = 'Some moments should feel this warm.';
+      titleEl.textContent = 'That smile is my favorite outcome.';
+      typeTextEl.innerHTML = 'You just made a very happy man. And yes, I will act a little smug about it.';
+      clearButtons();
+      miniTextEl.textContent = 'Done. Now celebrate properly.';
+      modalText.innerHTML = `
+        You just made me really happy, Alexandra.
+        <br />
+        And I’m glad I asked you this way.
+      `;
+
+      if (musicOn) {
+        try { await bgMusic.play(); } catch (e) {}
+      }
+    }
+
+    function createConfetti() {
+      const colors = ['#ff5f87', '#ffd6e2', '#ffffff', '#8de5ff', '#b8ffca'];
+      for (let i = 0; i < 90; i++) {
+        const el = document.createElement('div');
+        el.className = 'confetti';
+        const size = 6 + Math.random() * 8;
+        el.style.left = Math.random() * 100 + 'vw';
+        el.style.width = size + 'px';
+        el.style.height = (size * 1.8) + 'px';
+        el.style.background = colors[Math.floor(Math.random() * colors.length)];
+        el.style.animationDuration = (2.4 + Math.random() * 2.8) + 's';
+        el.style.transform = `translateY(0) rotate(${Math.random() * 180}deg)`;
+        document.body.appendChild(el);
+        setTimeout(() => el.remove(), 6000);
+      }
+    }
+
+    function toggleMusic() {
+      if (musicOn) {
+        bgMusic.pause();
+        musicOn = false;
+        musicLabel.textContent = 'Music off';
+        musicDot.classList.add('paused');
+      } else {
+        bgMusic.play().then(() => {
+          musicOn = true;
+          musicLabel.textContent = 'Music on';
+          musicDot.classList.remove('paused');
+        }).catch(() => {
+          musicLabel.textContent = 'Tap again';
+          musicDot.classList.add('paused');
+        });
+      }
+    }
+
+    function createBackgroundHearts() {
+      const root = document.getElementById('bgHearts');
+      const count = 18;
+      for (let i = 0; i < count; i++) {
+        const heart = document.createElement('span');
+        heart.className = 'heart';
+        const size = 8 + Math.random() * 18;
+        heart.style.left = Math.random() * 100 + 'vw';
+        heart.style.width = size + 'px';
+        heart.style.height = size + 'px';
+        heart.style.animationDuration = 14 + Math.random() * 16 + 's';
+        heart.style.animationDelay = -(Math.random() * 18) + 's';
+        heart.style.opacity = 0.25 + Math.random() * 0.45;
+        root.appendChild(heart);
+      }
+    }
+
+    function start() {
+      clearTimeout(typingTimer);
+      step = 0;
+      renderStep(step);
+    }
+
+    closeModal.addEventListener('click', () => {
+      modal.classList.remove('show');
+      modal.setAttribute('aria-hidden', 'true');
+    });
+    musicBtn.addEventListener('click', toggleMusic);
+
+    createBackgroundHearts();
+
+    // Intro state
+    titleEl.textContent = 'Alexandra, I made you something.';
+    typeTextEl.innerHTML = 'A simple page… but not a random one. I made this with you in mind — properly.';
+    setScene('A quiet little page, but with a very loud message.', 'No fake chat. No generic lines. Just intention.');
+
+    const startBtn = document.createElement('button');
+    startBtn.className = 'btn btn-primary';
+    startBtn.type = 'button';
+    startBtn.textContent = 'Start';
+    startBtn.addEventListener('click', () => {
+      toggleMusic();
+      start();
+      startBtn.remove();
+    });
+
+    const previewBtn = document.createElement('button');
+    previewBtn.className = 'btn btn-secondary';
+    previewBtn.type = 'button';
+    previewBtn.textContent = 'Preview the vibe';
+    previewBtn.addEventListener('click', () => {
+      miniTextEl.textContent = 'Minimal, warm, confident, and made for Alexandra.';
+      sceneSignatureEl.textContent = 'The goal is elegance, not noise.';
+      titleEl.textContent = 'For Alexandra only.';
+      typeTextEl.innerHTML = 'This is the kind of page that feels calm at first, then lands with a little more weight the deeper it goes.';
+    });
+
+    actionsEl.appendChild(startBtn);
+    actionsEl.appendChild(previewBtn);
+  </script>
+</body>
+</html>
